@@ -1,9 +1,6 @@
 package sorting;
 
-import java.util.ArrayList;
-
 import graphics.ArrayCanvas;
-import utils.Constants;
 
 public class Sorter
 	{

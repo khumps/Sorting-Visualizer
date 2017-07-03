@@ -221,7 +221,6 @@ public class VisualizingPanel extends Application
 					sorterPanel.getChildren().add(ap);
 					sorters.add(ap);
 					double panelWidth = sorterPanel.getWidth() / sorters.size();
-					double panelHeight = sorterPanel.getHeight();
 					// double panelWidth = 750;
 					// double panelHeight = 500;
 					for (ArrayPanel a : sorters) {

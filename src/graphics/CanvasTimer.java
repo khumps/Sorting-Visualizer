@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import utils.Constants;
 
 /**

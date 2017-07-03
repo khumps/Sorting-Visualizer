@@ -64,9 +64,7 @@ public class MergeSort
 
 		public static <E extends Comparable<E>> void sort(ArrayCanvas ac)
 			{
-				ArrayList<Integer> B = ac.getArray().list;
 				sort(ac, ac.getArray());
-
 			}
 
 		public static void sort(ArrayCanvas ac, PaintableArray pa)

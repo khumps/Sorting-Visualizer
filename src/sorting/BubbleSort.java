@@ -11,7 +11,6 @@ public class BubbleSort
 		public static void sort(ArrayCanvas ac)
 			{
 				ArrayList<Integer> list = ac.getArray().list;
-				int temp = 0;
 				for (int i = 0; i < list.size() - 1; i++) {
 					ac.getArray().addHighlight(i, Constants.COLOR_POINTER1);
 					for (int j = 1; j < list.size() - i; j++) {

@@ -9,7 +9,6 @@ public class HeapSort
 	{
 		public static void heapify(ArrayCanvas ac, int count)
 			{
-				ArrayList<Integer> list = ac.getArray().list;
 				int start = count / 2 - 1;
 				while (start >= 0) {
 					siftDown(ac, start, count - 1);

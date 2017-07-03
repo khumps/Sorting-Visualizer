@@ -6,6 +6,7 @@ import graphics.ArrayCanvas;
 
 public class ShellSort
 	{
+		// TODO Fix Shellsort
 		public static <E extends Comparable<E>> void sort(ArrayCanvas ac)
 			{
 				ArrayList<Integer> list = ac.getArray().list;

@@ -18,7 +18,6 @@ public class BitonicSort
 
 		private static void merge(ArrayCanvas ac, PaintableArray list, int lo, int count, boolean direction)
 			{
-				ArrayList<Integer> l = list.list;
 				if (count > 1) {
 					int k = count / 2;
 					for (int i = lo; i < lo + k; i++) {
