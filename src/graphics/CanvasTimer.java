@@ -15,13 +15,15 @@ import utils.Constants;
  */
 public class CanvasTimer extends AnimationTimer
 	{
+		VisualizingPanel panel;
 		FlowPane pane;
 		ArrayList<ArrayPanel> arrays;
 
-		public CanvasTimer(FlowPane pane, ArrayList<ArrayPanel> canvas)
+		public CanvasTimer(VisualizingPanel panel)
 			{
-				this.pane = pane;
-				this.arrays = canvas;
+				this.panel = panel;
+				this.pane = panel.sorterPanel;
+				this.arrays = panel.sorters;
 			}
 
 		/**
@@ -30,10 +32,12 @@ public class CanvasTimer extends AnimationTimer
 		@Override
 		public void handle(long now)
 			{
-				double panelWidth = arrays.size() < Constants.MAX_SORTERS / 2 ? pane.getWidth() / arrays.size() : pane.getWidth() / (arrays.size() / 2);
-				double panelHeight = arrays.size() < Constants.MAX_SORTERS / 2 ? pane.getHeight() : pane.getHeight() / 2;
+				double panelWidth = 1;
+				if (arrays.size() > 0)
+					panelWidth = pane.getWidth() / arrays.size() - (((arrays.size()) * Constants.HGAP) / arrays.size());
 				for (ArrayPanel ap : arrays) {
-					ap.updateSize(panelWidth, panelHeight);
+					if (arrays.size() > 0)
+						ap.updateSize(panelWidth);
 					ap.updateInfo();
 					ap.canvas.paintAll(Constants.maxDrawDepth);
 				}

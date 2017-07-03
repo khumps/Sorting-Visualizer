@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import utils.CanvasUtils;
 import utils.Constants;
 import utils.Constants.SORTING_TYPE;
 
@@ -31,7 +32,7 @@ public class ArrayPanel extends Pane
 		public ArrayPanel(VisualizingPanel panel, ArrayList<Integer> list, double width, double height)
 			{
 				this.panel = panel;
-				canvas = new ArrayCanvas(panel, new ArrayList<Integer>(list), 0, 35, width, height);
+				canvas = new ArrayCanvas(panel, new ArrayList<Integer>(list), 0, 30, width, height);
 				gui = new HBox();
 				initGui();
 				getChildren().add(canvas);
@@ -99,10 +100,10 @@ public class ArrayPanel extends Pane
 		/**
 		 * Discards the panel from from the containing VisualizingPanel
 		 */
-		private void remove()
+		public void remove()
 			{
-				canvas.cleanup();
-				panel.removePanel(this);
+				if (!panel.isRunning)
+					panel.removeSorter(this);
 			}
 
 		/**
@@ -153,14 +154,14 @@ public class ArrayPanel extends Pane
 				swaps.setText(" Swaps: " + canvas.getSwap() + " ");
 			}
 
-		public void updateSize(double width, double height)
+		public void updateSize(double width)
 			{
-				if (canvas.getWidth() != width && canvas.getHeight() != height) {
-					setMinWidth(width);
-					setMinHeight(height);
-					canvas.setWidth(width);
-					canvas.setHeight(height);
-					canvas.updateSize(width, height, canvas.getGraphicsContext2D());
+				if (canvas != null) {
+					if (canvas.getWidth() != width) {
+						setMaxWidth(width);
+						canvas.setWidth(width);
+						canvas.updateSize(width, canvas.getGraphicsContext2D());
+					}
 				}
 			}
 	}

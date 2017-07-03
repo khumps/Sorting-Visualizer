@@ -61,7 +61,7 @@ public class CanvasUtils
 				GraphicsContext gc = ac.getGraphicsContext2D();
 				gc.clearRect(x - 1, y - 1, width + 2, height + 2);
 				double heightMultiplier = height / max; // Calculates the scale factor for the height of the bars
-				double barWidth = (width - 4) / (hi - lo); // Calculates the width of each bar
+				double barWidth = (width-1) / (hi - lo); // Calculates the width of each bar
 				gc.setStroke(Color.BLACK); // Sets the color of the bounding box
 				gc.setLineWidth(2); // Sets the width of the stroke for the bounding box
 				gc.strokeRect(x, y, width, height); // Draws the bounding box of the array
@@ -71,9 +71,9 @@ public class CanvasUtils
 				for (int i = lo; i < hi; i++) {
 					double barHeight = list.get(i) * heightMultiplier; // Calculates how tall to draw the bar
 					gc.setFill(pa.getHighlight(i)); // Sets the color for the fill of the bar
-					gc.fillRect(x + (i - lo) * barWidth + 2, y + height - barHeight, barWidth, barHeight); // Draws the bars
+					gc.fillRect(x + (i - lo) * barWidth, y + height - barHeight, barWidth, barHeight); // Draws the bars
 					gc.setStroke(Color.GRAY); // Sets the color for the outline of the bar
-					gc.strokeRect(x + (i - lo) * barWidth + 2, y + height - barHeight, barWidth, barHeight); // Draws the outline of the bars
+					gc.strokeRect(x + (i - lo) * barWidth, y + height - barHeight, barWidth, barHeight); // Draws the outline of the bars
 				}
 			}
 

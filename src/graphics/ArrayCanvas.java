@@ -17,15 +17,6 @@ public class ArrayCanvas extends Canvas
 	{
 		public static double ARRAY_HEIGHT;
 		public static int ARRAY_SIZE;
-
-		/**
-		 * Sets the size for any future reinitializations
-		 */
-		public static void setSize(int size)
-			{
-				ARRAY_SIZE = size;
-			}
-
 		PaintableArray array;
 		private int comparisons = 0;
 		Thread mainThread;
@@ -36,7 +27,8 @@ public class ArrayCanvas extends Canvas
 
 		public ArrayCanvas(VisualizingPanel panel, ArrayList<Integer> list, double x, double y, double width, double height)
 			{
-				super(width, height);
+				super(width,height);
+				setManaged(true);
 				this.panel = panel;
 				ARRAY_HEIGHT = height / 3;
 				array = new PaintableArray(list, x, y, width, ARRAY_HEIGHT, 1, null);
@@ -147,6 +139,14 @@ public class ArrayCanvas extends Canvas
 			}
 
 		/**
+		 * Sets the size of arrays for any future reinitializations
+		 */
+		public static void setArraySize(int size)
+			{
+				ARRAY_SIZE = size;
+			}
+
+		/**
 		 * Sorts the array in a new thread
 		 */
 		public void sort()
@@ -214,9 +214,9 @@ public class ArrayCanvas extends Canvas
 				}
 			}
 
-		public void updateSize(double width, double height, GraphicsContext gc)
+		public void updateSize(double width, GraphicsContext gc)
 			{
-				array.updateSize(width, height, gc);
+				array.updateSize(width, gc);
 			}
 
 	}

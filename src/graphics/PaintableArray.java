@@ -26,8 +26,8 @@ public class PaintableArray
 		public int max;
 		public final PaintableArray parent;
 		public double width;
-		public final double x;
-		public final double y;
+		public double x;
+		public double y;
 
 		public PaintableArray(ArrayList<Integer> list, double x, double y, double width, double height, int depth, PaintableArray parent)
 			{
@@ -291,18 +291,18 @@ public class PaintableArray
 				max = maxVal();
 			}
 
-		public void updateSize(double width, double height, GraphicsContext gc)
+		public void updateSize(double width, GraphicsContext gc)
 			{
-				_updateSize(width / this.width, height / this.height, gc);
+				_updateSize(width / this.width, gc);
 			}
 
-		public void _updateSize(double widthScale, double heightScale, GraphicsContext gc)
+		public void _updateSize(double widthScale, GraphicsContext gc)
 			{
 				clear(gc);
 				width *= widthScale;
-				height *= heightScale;
+				x *= widthScale;
 				for (int i = 0; i < children.size(); i++) {
-					children.get(i)._updateSize(widthScale, heightScale, gc);
+					children.get(i)._updateSize(widthScale, gc);
 				}
 			}
 

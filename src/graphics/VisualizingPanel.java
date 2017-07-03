@@ -31,10 +31,11 @@ public class VisualizingPanel extends Application
 				launch(args);
 			}
 
+		public Stage primaryStage;
 		private Button addSorter;
-		protected ArrayList<ArrayPanel> arrays;
+		public ArrayList<ArrayPanel> sorters;
 		private ArrayList<Integer> baseArray;
-		private FlowPane canvasPanel;
+		public FlowPane sorterPanel;
 		// private ComboBox<>
 		private Slider delay;
 		private HBox gui;
@@ -49,24 +50,6 @@ public class VisualizingPanel extends Application
 		public final ImageView stopImage = new ImageView(new Image(getClass().getResourceAsStream("../stop.png")));
 
 		protected CanvasTimer timer;
-
-		/**
-		 * Add another array visualization
-		 */
-		public void addArray()
-			{
-				if (arrays.size() < Constants.MAX_SORTERS && !isSorting()) {
-					ArrayPanel ap = new ArrayPanel(this, baseArray, 500, 500);
-					canvasPanel.getChildren().add(ap);
-					arrays.add(ap);
-					double panelWidth = arrays.size() < Constants.MAX_SORTERS / 2 ? canvasPanel.getWidth() / arrays.size() : canvasPanel.getWidth() / (arrays.size() / 2);
-					double panelHeight = arrays.size() < Constants.MAX_SORTERS / 2 ? canvasPanel.getHeight() : canvasPanel.getHeight() / 2;
-					for (ArrayPanel a : arrays) {
-						a.updateSize(panelWidth, panelHeight);
-					}
-				}
-
-			}
 
 		/**
 		 * Called after all panels have finished sorting
@@ -146,7 +129,7 @@ public class VisualizingPanel extends Application
 
 				sizes.setOnAction(e ->
 					{
-						ArrayCanvas.setSize(sizes.getSelectionModel().getSelectedItem());
+						ArrayCanvas.setArraySize(sizes.getSelectionModel().getSelectedItem());
 					});
 				gui.getChildren().add(sizes);
 
@@ -169,14 +152,14 @@ public class VisualizingPanel extends Application
 				addSorter.setPrefSize(100, 20);
 				addSorter.setOnAction(e ->
 					{
-						addArray();
+						addSorter();
 					});
 				gui.getChildren().add(addSorter);
 			}
 
 		public boolean isSorting()
 			{
-				for (ArrayPanel ap : arrays) {
+				for (ArrayPanel ap : sorters) {
 					if (ap.isSorting()) {
 						return true;
 					}
@@ -191,7 +174,7 @@ public class VisualizingPanel extends Application
 			{
 				if (isRunning && isSorting) {
 					isRunning = false;
-					for (ArrayPanel ap : arrays) {
+					for (ArrayPanel ap : sorters) {
 						ap.suspend();
 						ap.canvas.suspendThreads();
 					}
@@ -203,14 +186,15 @@ public class VisualizingPanel extends Application
 		 */
 		private void postInit()
 			{
-				ArrayCanvas.setSize(sizes.getSelectionModel().getSelectedItem());
+				ArrayCanvas.setArraySize(sizes.getSelectionModel().getSelectedItem());
 				baseArray = Shuffler.generateArray(null, ArrayCanvas.ARRAY_SIZE);
-				addArray();
+				// addSorter();
 			}
 
 		/**
+		 * Randomizes all arrays if the sorter isnt running
 		 * 
-		 * @return
+		 * @return Currently sorting ? true : false
 		 */
 		public boolean random()
 			{
@@ -219,7 +203,7 @@ public class VisualizingPanel extends Application
 					if (isSorting)
 						stop();
 					baseArray = Shuffler.random(Shuffler.inOrder(sizes.getSelectionModel().getSelectedItem(), true));
-					for (ArrayPanel ap : arrays) {
+					for (ArrayPanel ap : sorters) {
 						ap.init(baseArray);
 					}
 					return true;
@@ -227,10 +211,39 @@ public class VisualizingPanel extends Application
 				return false;
 			}
 
-		public void removePanel(ArrayPanel ap)
+		/**
+		 * Add another array visualization
+		 */
+		public void addSorter()
 			{
-				canvasPanel.getChildren().remove(ap);
-				arrays.remove(ap);
+				if (sorters.size() < Constants.MAX_SORTERS && !isSorting()) {
+					ArrayPanel ap = new ArrayPanel(this, baseArray, 500, 500);
+					sorterPanel.getChildren().add(ap);
+					sorters.add(ap);
+					double panelWidth = sorterPanel.getWidth() / sorters.size();
+					double panelHeight = sorterPanel.getHeight();
+					// double panelWidth = 750;
+					// double panelHeight = 500;
+					for (ArrayPanel a : sorters) {
+						a.updateSize(panelWidth);
+					}
+				}
+				if (sorters.size() < 2)
+					primaryStage.setMinWidth(Constants.MIN_SORTER_WIDTH * 2);
+				else
+					primaryStage.setMinWidth(sorters.size() * Constants.MIN_SORTER_WIDTH);
+			}
+
+		public void removeSorter(ArrayPanel ap)
+			{
+				ap.stop();
+				ap.canvas.cleanup();
+				sorters.remove(ap);
+				sorterPanel.getChildren().remove(ap);
+				if (sorters.size() < 2)
+					primaryStage.setMinWidth(Constants.MIN_SORTER_WIDTH * 2);
+				else
+					primaryStage.setMinWidth(sorters.size() * Constants.MIN_SORTER_WIDTH);
 			}
 
 		/**
@@ -240,7 +253,7 @@ public class VisualizingPanel extends Application
 			{
 				if (!isRunning && isSorting) {
 					isRunning = true;
-					for (ArrayPanel ap : arrays) {
+					for (ArrayPanel ap : sorters) {
 						ap.resume();
 						ap.canvas.resumeThreads();
 					}
@@ -252,15 +265,14 @@ public class VisualizingPanel extends Application
 		 */
 		public synchronized void sort()
 			{
-				for (ArrayPanel ap : arrays) {
+				for (ArrayPanel ap : sorters) {
 					ap.sort();
 				}
 				isSorting = true;
 				isRunning = true;
-
 				Thread t = new Thread(() ->
 					{
-						for (ArrayPanel ap : arrays) {
+						for (ArrayPanel ap : sorters) {
 							try {
 								ap.canvas.mainThread.join();
 							} catch (InterruptedException e) {
@@ -276,24 +288,22 @@ public class VisualizingPanel extends Application
 		@Override
 		public void start(Stage primaryStage)
 			{
+				this.primaryStage = primaryStage;
 				primaryStage.setTitle("Sorting Visualizer");
+				primaryStage.setMinWidth(Constants.MIN_SORTER_WIDTH * 2);
+				primaryStage.setMinHeight(500);
 				BorderPane bp = new BorderPane();
 				gui = new HBox();
-				canvasPanel = new FlowPane();
-				canvasPanel.setHgap(20);
-				canvasPanel.setVgap(10);
-				bp.prefWidthProperty().bind(primaryStage.widthProperty());
-				bp.prefHeightProperty().bind(primaryStage.heightProperty());
-				canvasPanel.prefWidthProperty().bind(bp.widthProperty());
-				canvasPanel.prefHeightProperty().bind(bp.heightProperty());
-				arrays = new ArrayList<ArrayPanel>();
-				timer = new CanvasTimer(canvasPanel, arrays);
+				sorterPanel = new FlowPane();
+				sorterPanel.setManaged(true);
+				sorterPanel.setHgap(Constants.HGAP);
+				sorters = new ArrayList<ArrayPanel>();
+				timer = new CanvasTimer(this);
 				initUI();
 				postInit();
 				bp.setTop(gui);
-				bp.setCenter(canvasPanel);
-				primaryStage.setMaximized(true);
-				primaryStage.setResizable(false);
+				bp.setCenter(sorterPanel);
+				primaryStage.setResizable(true);
 				primaryStage.setScene(new Scene(bp));
 				timer.start();
 				primaryStage.show();
@@ -306,7 +316,7 @@ public class VisualizingPanel extends Application
 		public void stop()
 			{
 				if (isSorting) {
-					for (ArrayPanel ap : arrays) {
+					for (ArrayPanel ap : sorters) {
 						ap.stop();
 						ap.canvas.cleanThreads();
 					}

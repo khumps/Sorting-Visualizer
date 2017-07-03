@@ -35,9 +35,9 @@ public class Constants
 		public static long DELAY = 10;
 
 		// VisualizingPanel
-		public static final int MAX_SORTERS = 8;
-		public static double SORTER_WIDTH = 1000; //Initial value irrelevant
-		public static double SORTER_HEIGHT = 1000; // Initial value irrelevant
+		public static final int MAX_SORTERS = 6;
+		public static final int HGAP = 30; // Gap in between sorters
+		public static final int MIN_SORTER_WIDTH = 400; // Minimum size of a single sorter
 		// PaintableArray
 		public static final int maxDrawDepth = 20;
 		// @formatter:on
