@@ -2,6 +2,7 @@ package graphics;
 
 import java.util.ArrayList;
 
+import graphics.VisualizingPanel.STATE;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import sorting.Sorter;
@@ -27,8 +28,8 @@ public class ArrayCanvas extends Canvas
 
 		public ArrayCanvas(VisualizingPanel panel, ArrayList<Integer> list, double x, double y, double width, double height)
 			{
-				super(width,height);
-				setManaged(true);
+				super(width, height);
+				// setManaged(true);
 				this.panel = panel;
 				ARRAY_HEIGHT = height / 3;
 				array = new PaintableArray(list, x, y, width, ARRAY_HEIGHT, 1, null);
@@ -41,6 +42,7 @@ public class ArrayCanvas extends Canvas
 		 */
 		public void cleanup()
 			{
+				reset();
 				array.cleanup(getGraphicsContext2D());
 			}
 
@@ -151,10 +153,9 @@ public class ArrayCanvas extends Canvas
 		 */
 		public void sort()
 			{
-				if (!panel.isSorting && sortingType != null) {
+				if (panel.state == STATE.PAUSED || panel.state == STATE.STOPPED && sortingType != null) {
 					Runnable sort = () ->
 						{
-							reset();
 							Sorter.sort(this);
 						};
 					mainThread = new Thread(sort);

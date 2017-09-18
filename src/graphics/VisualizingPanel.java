@@ -31,23 +31,26 @@ public class VisualizingPanel extends Application
 				launch(args);
 			}
 
-		public Stage primaryStage;
+		Stage primaryStage;
 		private Button addSorter;
-		public ArrayList<ArrayPanel> sorters;
+		ArrayList<ArrayPanel> sorters;
 		private ArrayList<Integer> baseArray;
-		public FlowPane sorterPanel;
-		// private ComboBox<>
+		FlowPane sorterPanel;
 		private Slider delay;
 		private HBox gui;
-		protected boolean isRunning;
-		protected boolean isSorting;
-		public final ImageView PAUSE_IMAGE = new ImageView(new Image(getClass().getResourceAsStream("../pause.png")));
+
+		enum STATE
+			{
+			STOPPED, RUNNING, PAUSED;
+			}
+
+		STATE state;
+		final ImageView PAUSE_IMAGE = new ImageView(new Image(getClass().getResourceAsStream("../pause.png")));
+		final ImageView SORT_IMAGE = new ImageView(new Image(getClass().getResourceAsStream("../sort.png")));
+		final ImageView STOP_IMAGE = new ImageView(new Image(getClass().getResourceAsStream("../stop.png")));
 		private Button shuffle;
 		private ComboBox<Integer> sizes;
-
 		private Button sort;
-		public final ImageView SORT_IMAGE = new ImageView(new Image(getClass().getResourceAsStream("../sort.png")));
-		public final ImageView stopImage = new ImageView(new Image(getClass().getResourceAsStream("../stop.png")));
 
 		protected CanvasTimer timer;
 
@@ -56,8 +59,7 @@ public class VisualizingPanel extends Application
 		 */
 		public void finishSort()
 			{
-				isSorting = false;
-				isRunning = false;
+				setState(STATE.STOPPED);
 				Platform.runLater(new Runnable()
 					{
 						@Override
@@ -87,7 +89,7 @@ public class VisualizingPanel extends Application
 						}
 
 						else {
-							if (isRunning) {
+							if (state == STATE.RUNNING) {
 								pause();
 								sort.setText("Resume");
 								sort.setGraphic(SORT_IMAGE);
@@ -107,7 +109,7 @@ public class VisualizingPanel extends Application
 				shuffle.setPrefSize(100, 20);
 				shuffle.setOnAction(e ->
 					{
-						if (random()) {
+						if (shuffle()) {
 							sort.setGraphic(SORT_IMAGE);
 							sort.setText("Sort");
 						}
@@ -170,14 +172,12 @@ public class VisualizingPanel extends Application
 		/**
 		 * Pauses sorting
 		 */
-		public void pause()
+		private void pause()
 			{
-				if (isRunning && isSorting) {
-					isRunning = false;
-					for (ArrayPanel ap : sorters) {
-						ap.suspend();
-						ap.canvas.suspendThreads();
-					}
+				setState(STATE.PAUSED);
+				for (ArrayPanel ap : sorters) {
+					ap.suspend();
+					ap.canvas.suspendThreads();
 				}
 			}
 
@@ -186,6 +186,7 @@ public class VisualizingPanel extends Application
 		 */
 		private void postInit()
 			{
+				setState(STATE.STOPPED);
 				ArrayCanvas.setArraySize(sizes.getSelectionModel().getSelectedItem());
 				baseArray = Shuffler.generateArray(null, ArrayCanvas.ARRAY_SIZE);
 				// addSorter();
@@ -196,11 +197,10 @@ public class VisualizingPanel extends Application
 		 * 
 		 * @return Currently sorting ? true : false
 		 */
-		public boolean random()
+		public boolean shuffle()
 			{
-
-				if (!isRunning) {
-					if (isSorting)
+				if (state == STATE.PAUSED || state == STATE.STOPPED) {
+					if (state == STATE.PAUSED)
 						stop();
 					baseArray = Shuffler.random(Shuffler.inOrder(sizes.getSelectionModel().getSelectedItem(), true));
 					for (ArrayPanel ap : sorters) {
@@ -217,12 +217,10 @@ public class VisualizingPanel extends Application
 		public void addSorter()
 			{
 				if (sorters.size() < Constants.MAX_SORTERS && !isSorting()) {
-					ArrayPanel ap = new ArrayPanel(this, baseArray, 500, 500);
+					ArrayPanel ap = new ArrayPanel(this, baseArray, 500, 1000);
 					sorterPanel.getChildren().add(ap);
 					sorters.add(ap);
 					double panelWidth = sorterPanel.getWidth() / sorters.size();
-					// double panelWidth = 750;
-					// double panelHeight = 500;
 					for (ArrayPanel a : sorters) {
 						a.updateSize(panelWidth);
 					}
@@ -250,8 +248,8 @@ public class VisualizingPanel extends Application
 		 */
 		public void resume()
 			{
-				if (!isRunning && isSorting) {
-					isRunning = true;
+				if (state == STATE.PAUSED) {
+					setState(STATE.RUNNING);
 					for (ArrayPanel ap : sorters) {
 						ap.resume();
 						ap.canvas.resumeThreads();
@@ -264,24 +262,24 @@ public class VisualizingPanel extends Application
 		 */
 		public synchronized void sort()
 			{
-				for (ArrayPanel ap : sorters) {
-					ap.sort();
-				}
-				isSorting = true;
-				isRunning = true;
-				Thread t = new Thread(() ->
-					{
-						for (ArrayPanel ap : sorters) {
-							try {
-								ap.canvas.mainThread.join();
-							} catch (InterruptedException e) {
-								e.printStackTrace();
+				if (state == STATE.PAUSED || state == STATE.STOPPED) {
+					for (ArrayPanel ap : sorters) {
+						ap.sort();
+					}
+					setState(STATE.RUNNING);
+					Thread t = new Thread(() ->
+						{
+							for (ArrayPanel ap : sorters) {
+								try {
+									ap.canvas.mainThread.join();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
 							}
-						}
-						finishSort();
-					});
-				t.start();
-
+							finishSort();
+						});
+					t.start();
+				}
 			}
 
 		@Override
@@ -314,13 +312,17 @@ public class VisualizingPanel extends Application
 		@Override
 		public void stop()
 			{
-				if (isSorting) {
+				if (state == STATE.PAUSED || state == STATE.RUNNING) {
 					for (ArrayPanel ap : sorters) {
 						ap.stop();
 						ap.canvas.cleanThreads();
 					}
-					isSorting = false;
-					isRunning = false;
+					setState(STATE.STOPPED);
 				}
+			}
+
+		protected void setState(STATE state)
+			{
+				this.state = state;
 			}
 	}

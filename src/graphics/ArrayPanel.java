@@ -2,6 +2,7 @@ package graphics;
 
 import java.util.ArrayList;
 
+import graphics.VisualizingPanel.STATE;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -100,7 +101,7 @@ public class ArrayPanel extends Pane
 		 */
 		public void remove()
 			{
-				if (!panel.isRunning)
+				if (panel.state == STATE.PAUSED || panel.state == STATE.STOPPED)
 					panel.removeSorter(this);
 			}
 

@@ -253,7 +253,7 @@ public class PaintableArray
 		public PaintableArray subArray(int lo, int hi)
 			{
 				ArrayList<Integer> temp = new ArrayList<Integer>(list.subList(lo, hi));
-				PaintableArray p = new PaintableArray(temp, x + width / (this.hi - this.lo) * (lo - this.lo) + 2, y + height + 10, width / (this.hi - this.lo) * (hi - lo) - 4, height / 1.5, depth + 1,
+				PaintableArray p = new PaintableArray(temp, x + width / (this.hi - this.lo) * (lo - this.lo) + 2, y + height + 10, width / (this.hi - this.lo) * (hi - lo) - 4, height / 1.8, depth + 1,
 						this);
 				synchronized (children) {
 					children.add(p);

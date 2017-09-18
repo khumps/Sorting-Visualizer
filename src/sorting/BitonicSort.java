@@ -61,6 +61,7 @@ public class BitonicSort
 			{
 				ArrayList<Integer> list = ac.getArray().list;
 				int padding = padLength(list);
+				System.out.println(ac.getArray().list.size());
 				ac.getArray().updateArray();
 				sort(ac, ac.getArray(), 0, list.size(), true, ac.getGraphicsContext2D());
 				removePad(list, padding);

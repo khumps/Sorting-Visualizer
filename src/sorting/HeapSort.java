@@ -27,9 +27,11 @@ public class HeapSort
 					if (list.get(swap) < list.get(child)) {
 						swap = child;
 					}
+					ac.compare();
 					if (child + 1 <= end && list.get(swap) < list.get(child + 1)) {
 						swap = child + 1;
 					}
+					ac.compare();
 					if (swap != root) {
 						CanvasUtils.swap(ac, ac.getArray(), root, swap);
 						root = swap;

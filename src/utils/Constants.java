@@ -39,6 +39,6 @@ public class Constants
 		public static final int HGAP = 30; // Gap in between sorters
 		public static final int MIN_SORTER_WIDTH = 400; // Minimum size of a single sorter
 		// PaintableArray
-		public static final int maxDrawDepth = 20;
+		public static final int maxDrawDepth = 6;
 		// @formatter:on
 	}
