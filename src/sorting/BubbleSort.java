@@ -19,9 +19,9 @@ public class BubbleSort
 						if (list.get(j - 1) > list.get(j)) {
 							CanvasUtils.swap(ac, ac.getArray(), j, j - 1);
 						}
-						ac.getArray().removeHighlight(j);
+						ac.getArray().removeHighlights(j);
 					}
-					ac.getArray().removeHighlight(i);
+					ac.getArray().removeHighlights(i);
 				}
 
 			}

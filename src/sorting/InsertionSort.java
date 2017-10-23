@@ -16,21 +16,22 @@ public class InsertionSort
 				for (int i = 1; i < list.size(); i++) {
 					temp = list.get(i);
 					int j = i;
-
+					ac.getArray().addHighlight(i, Constants.COLOR_POINTER2);
 					while ((j > 0) && (list.get(j - 1) > temp)) {
 						ac.compare();
-						ac.getArray().addHighlight(i, Constants.COLOR_POINTER2);
 						list.set(j, list.get(j - 1));
 						ac.swap();
 						ac.getArray().addHighlight(j, Constants.COLOR_SWAP);
+						ac.getArray().addHighlight(j - 1, Constants.COLOR_SWAP);
 						CanvasUtils.sleep(10);
-						ac.getArray().removeHighlight(j);
+						ac.getArray().removeHighlights(j, j - 1);
+						ac.getArray().clearHighlights();
 						j--;
 					}
 					list.set(j, temp);
 					ac.swap();
 					CanvasUtils.sleep(10);
-					ac.getArray().removeHighlight(i);
+					ac.getArray().removeHighlights(i);
 				}
 			}
 	}

@@ -234,7 +234,7 @@ public class PaintableArray
 		 * @param index
 		 *            Index to remove highlight from
 		 */
-		public void removeHighlight(int... indexes)
+		public void removeHighlights(int... indexes)
 			{
 				CanvasUtils.sleep(Constants.DELAY);
 				for (int i : indexes) {
@@ -242,7 +242,7 @@ public class PaintableArray
 				}
 			}
 
-		public void removeHighlights()
+		public void clearHighlights()
 			{
 				highlights.clear();
 			}

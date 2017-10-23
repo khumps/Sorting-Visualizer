@@ -16,6 +16,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import utils.Constants;
+import utils.Constants.STATE;
+import utils.Constants.SHUFFLER_TYPE;
 import utils.Shuffler;
 
 /**
@@ -38,18 +40,13 @@ public class VisualizingPanel extends Application
 		FlowPane sorterPanel;
 		private Slider delay;
 		private HBox gui;
-
-		enum STATE
-			{
-			STOPPED, RUNNING, PAUSED;
-			}
-
 		STATE state;
 		final ImageView PAUSE_IMAGE = new ImageView(new Image(getClass().getResourceAsStream("../pause.png")));
 		final ImageView SORT_IMAGE = new ImageView(new Image(getClass().getResourceAsStream("../sort.png")));
 		final ImageView STOP_IMAGE = new ImageView(new Image(getClass().getResourceAsStream("../stop.png")));
 		private Button shuffle;
 		private ComboBox<Integer> sizes;
+		private ComboBox<Constants.SHUFFLER_TYPE> shuffleType;
 		private Button sort;
 
 		protected CanvasTimer timer;
@@ -109,7 +106,7 @@ public class VisualizingPanel extends Application
 				shuffle.setPrefSize(100, 20);
 				shuffle.setOnAction(e ->
 					{
-						if (shuffle()) {
+						if (shuffleArray()) {
 							sort.setGraphic(SORT_IMAGE);
 							sort.setText("Sort");
 						}
@@ -136,9 +133,12 @@ public class VisualizingPanel extends Application
 				gui.getChildren().add(sizes);
 
 				// Init shuffler ComboBox
-
+				shuffleType = new ComboBox<>();
+				shuffleType.getItems().addAll(SHUFFLER_TYPE.values());
+				shuffleType.getSelectionModel().select(SHUFFLER_TYPE.RANDOM_ALL_UNIQUES);
+				gui.getChildren().add(shuffleType);
 				// Init delay Slider
-				delay = new Slider(1, 50, 10);
+				delay = new Slider(Constants.MIN_DELAY, Constants.MAX_DELAY, (Constants.MAX_DELAY + Constants.MIN_DELAY) / 2);
 				delay.setPrefSize(300, 20);
 				delay.setTooltip(new Tooltip("Delay"));
 				delay.setShowTickLabels(true);
@@ -195,14 +195,14 @@ public class VisualizingPanel extends Application
 		/**
 		 * Randomizes all arrays if the sorter isnt running
 		 * 
-		 * @return Currently sorting ? true : false
+		 * @return true if the sorter was stopped or paused, false otherwise
 		 */
-		public boolean shuffle()
+		public boolean shuffleArray()
 			{
 				if (state == STATE.PAUSED || state == STATE.STOPPED) {
 					if (state == STATE.PAUSED)
 						stop();
-					baseArray = Shuffler.random(Shuffler.inOrder(sizes.getSelectionModel().getSelectedItem(), true));
+					baseArray = Shuffler.generateArray(shuffleType.getSelectionModel().getSelectedItem(), sizes.getSelectionModel().getSelectedItem());
 					for (ArrayPanel ap : sorters) {
 						ap.init(baseArray);
 					}
@@ -234,7 +234,6 @@ public class VisualizingPanel extends Application
 		public void removeSorter(ArrayPanel ap)
 			{
 				ap.stop();
-				ap.canvas.cleanup();
 				sorters.remove(ap);
 				sorterPanel.getChildren().remove(ap);
 				if (sorters.size() < 2)
@@ -243,18 +242,28 @@ public class VisualizingPanel extends Application
 					primaryStage.setMinWidth(sorters.size() * Constants.MIN_SORTER_WIDTH);
 			}
 
-		/**
-		 * Resumes sorting if it has been paused
-		 */
-		public void resume()
+		@Override
+		public void start(Stage primaryStage)
 			{
-				if (state == STATE.PAUSED) {
-					setState(STATE.RUNNING);
-					for (ArrayPanel ap : sorters) {
-						ap.resume();
-						ap.canvas.resumeThreads();
-					}
-				}
+				this.primaryStage = primaryStage;
+				primaryStage.setTitle("Sorting Visualizer");
+				primaryStage.setMinWidth(Constants.MIN_SORTER_WIDTH * 2);
+				primaryStage.setMinHeight(500);
+				BorderPane bp = new BorderPane();
+				gui = new HBox();
+				sorterPanel = new FlowPane();
+				sorterPanel.setManaged(true);
+				sorterPanel.setHgap(Constants.HGAP);
+				sorters = new ArrayList<ArrayPanel>();
+				timer = new CanvasTimer(this);
+				initUI();
+				postInit();
+				bp.setTop(gui);
+				bp.setCenter(sorterPanel);
+				primaryStage.setResizable(true);
+				primaryStage.setScene(new Scene(bp));
+				timer.start();
+				primaryStage.show();
 			}
 
 		/**
@@ -282,28 +291,18 @@ public class VisualizingPanel extends Application
 				}
 			}
 
-		@Override
-		public void start(Stage primaryStage)
+		/**
+		 * Resumes sorting if it has been paused
+		 */
+		public void resume()
 			{
-				this.primaryStage = primaryStage;
-				primaryStage.setTitle("Sorting Visualizer");
-				primaryStage.setMinWidth(Constants.MIN_SORTER_WIDTH * 2);
-				primaryStage.setMinHeight(500);
-				BorderPane bp = new BorderPane();
-				gui = new HBox();
-				sorterPanel = new FlowPane();
-				sorterPanel.setManaged(true);
-				sorterPanel.setHgap(Constants.HGAP);
-				sorters = new ArrayList<ArrayPanel>();
-				timer = new CanvasTimer(this);
-				initUI();
-				postInit();
-				bp.setTop(gui);
-				bp.setCenter(sorterPanel);
-				primaryStage.setResizable(true);
-				primaryStage.setScene(new Scene(bp));
-				timer.start();
-				primaryStage.show();
+				if (state == STATE.PAUSED) {
+					setState(STATE.RUNNING);
+					for (ArrayPanel ap : sorters) {
+						ap.resume();
+						ap.canvas.resumeThreads();
+					}
+				}
 			}
 
 		/**

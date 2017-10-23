@@ -7,6 +7,7 @@ import graphics.PaintableArray;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import sorting.Sorter;
 
 public class CanvasUtils
 	{
@@ -30,7 +31,7 @@ public class CanvasUtils
 			{
 				CanvasUtils.sleep(Constants.DELAY);
 				ac.compare();
-				return Shuffler.compare(list.list, i, j);
+				return Sorter.compare(list.list, i, j);
 			}
 
 		/**
@@ -61,7 +62,7 @@ public class CanvasUtils
 				GraphicsContext gc = ac.getGraphicsContext2D();
 				gc.clearRect(x - 1, y - 1, width + 2, height + 2);
 				double heightMultiplier = height / max; // Calculates the scale factor for the height of the bars
-				double barWidth = (width-1) / (hi - lo); // Calculates the width of each bar
+				double barWidth = (width - 1) / (hi - lo); // Calculates the width of each bar
 				gc.setStroke(Color.BLACK); // Sets the color of the bounding box
 				gc.setLineWidth(2); // Sets the width of the stroke for the bounding box
 				gc.strokeRect(x, y, width, height); // Draws the bounding box of the array
@@ -101,6 +102,6 @@ public class CanvasUtils
 				Shuffler.swap(pa.list, i, j); // Swaps the indexes
 				ac.swap();
 				CanvasUtils.sleep(Constants.DELAY * 5); // Halts the thread
-				pa.removeHighlight(i, j); // Removes the highlights
+				pa.removeHighlights(i, j); // Removes the highlights
 			}
 	}

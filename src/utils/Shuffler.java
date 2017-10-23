@@ -7,14 +7,6 @@ import utils.Constants.SHUFFLER_TYPE;
 public class Shuffler
 	{
 		/**
-		 * Compares two elements by index in a list
-		 */
-		public static <E extends Comparable<E>> int compare(ArrayList<E> list, int i, int j)
-			{
-				return list.get(i).compareTo(list.get(j));
-			}
-
-		/**
 		 * Generates a list of Integers of length numEntries with numEntries/10 of each value
 		 */
 		public static ArrayList<Integer> fewUniques(int numEntries, boolean forwards)
@@ -39,13 +31,13 @@ public class Shuffler
 				}
 				switch (type)
 					{
-					case NEARLY_SORTED_AU:
+					case NEARLY_SORTED_ALL_UNIQUES:
 						return nearlySorted(inOrder(size, true));
-					case NEARLY_SORTED_FU:
+					case NEARLY_SORTED_FEW_UNIQUES:
 						return nearlySorted(fewUniques(size, true));
-					case RANDOM_AU:
+					case RANDOM_ALL_UNIQUES:
 						return random(inOrder(size, true));
-					case RANDOM_FU:
+					case RANDOM_FEW_UNIQUES:
 						return random(fewUniques(size, true));
 					default:
 						return inOrder(size, true);
@@ -75,7 +67,7 @@ public class Shuffler
 		 */
 		public static <E> ArrayList<E> nearlySorted(ArrayList<E> list)
 			{
-				for (int i = 0; i < list.size(); i += list.size() / 20) {
+				for (int i = 0; i < list.size(); i += list.size() / (list.size() / 5)) {
 					swap(list, i, (int) (Math.random() * list.size()));
 				}
 				return list;

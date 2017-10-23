@@ -2,7 +2,6 @@ package graphics;
 
 import java.util.ArrayList;
 
-import graphics.VisualizingPanel.STATE;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -13,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import utils.Constants;
 import utils.Constants.SORTING_TYPE;
+import utils.Constants.STATE;
 
 /**
  * Contains and ArrayCanvas for drawing the array as well as HUD elements for selecting the sorting algorithm as well as showing number of comparisons and swaps
@@ -130,6 +130,7 @@ public class ArrayPanel extends Pane
 			{
 				if (canvas.mainThread != null) {
 					canvas.mainThread.stop();
+					canvas.cleanup();
 				}
 			}
 

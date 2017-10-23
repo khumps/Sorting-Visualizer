@@ -7,7 +7,7 @@ public class Constants
 
 		public enum SHUFFLER_TYPE
 			{
-			NEARLY_SORTED_AU, NEARLY_SORTED_FU, RANDOM_AU, RANDOM_FU
+			NEARLY_SORTED_ALL_UNIQUES, NEARLY_SORTED_FEW_UNIQUES, RANDOM_ALL_UNIQUES, RANDOM_FEW_UNIQUES
 			}
 
 		// Sorter
@@ -15,6 +15,7 @@ public class Constants
 		public enum SORTING_TYPE{
 				SELECTION,
 				INSERTION,
+				BOGO,
 				SHELL,
 				BUBBLE,
 				HEAP,
@@ -24,6 +25,13 @@ public class Constants
 				PQUICK,
 				BITONIC,
 				PBITONIC
+		}
+		
+		public enum STATE
+		{
+		STOPPED,
+		RUNNING,
+		PAUSED;
 		}
 		public static final Color COLOR_POINTER1 = Color.RED;
 		public static final Color COLOR_POINTER2 = Color.GREEN;
@@ -38,6 +46,8 @@ public class Constants
 		public static final int MAX_SORTERS = 6;
 		public static final int HGAP = 30; // Gap in between sorters
 		public static final int MIN_SORTER_WIDTH = 400; // Minimum size of a single sorter
+		public static final int MIN_DELAY = 0;
+		public static final int MAX_DELAY = 200;
 		// PaintableArray
 		public static final int maxDrawDepth = 6;
 		// @formatter:on

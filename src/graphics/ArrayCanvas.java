@@ -2,11 +2,11 @@ package graphics;
 
 import java.util.ArrayList;
 
-import graphics.VisualizingPanel.STATE;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import sorting.Sorter;
 import utils.Constants.SORTING_TYPE;
+import utils.Constants.STATE;
 
 /**
  * Responsible for visualizing one individual instance of sorting (one algorithm and one array)

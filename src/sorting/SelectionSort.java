@@ -27,16 +27,16 @@ public class SelectionSort
 						ac.getArray().addHighlight(j, Constants.COLOR_POINTER1);
 						if (CanvasUtils.compare(ac, ac.getArray(), min, j) > 0) {
 							if (min != i) {
-								ac.getArray().removeHighlight(min);
+								ac.getArray().removeHighlights(min);
 							}
 							min = j;
 							ac.getArray().addHighlight(min, Constants.COLOR_POINTER2);
 						} else
-							ac.getArray().removeHighlight(j);
+							ac.getArray().removeHighlights(j);
 					}
 					CanvasUtils.swap(ac, ac.getArray(), i, min);
-					ac.getArray().removeHighlight(i);
-					ac.getArray().removeHighlight(min);
+					ac.getArray().removeHighlights(i);
+					ac.getArray().removeHighlights(min);
 					CanvasUtils.sleep(10);
 				}
 			}

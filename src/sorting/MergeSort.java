@@ -29,9 +29,9 @@ public class MergeSort
 							merge.addHighlight(indexRes, Constants.COLOR_SWAP);
 							mergeA.set(indexRes, leftA.get(indexL));
 							ac.swap();
-							left.removeHighlight(indexL);
-							merge.removeHighlight(indexRes);
-							left.removeHighlight(indexR);
+							left.removeHighlights(indexL);
+							merge.removeHighlights(indexRes);
+							left.removeHighlights(indexR);
 							indexL++;
 							indexRes++;
 						} else {
@@ -39,9 +39,9 @@ public class MergeSort
 							merge.addHighlight(indexRes, Constants.COLOR_SWAP);
 							mergeA.set(indexRes, rightA.get(indexR));
 							ac.swap();
-							right.removeHighlight(indexR);
-							merge.removeHighlight(indexRes);
-							right.removeHighlight(indexR);
+							right.removeHighlights(indexR);
+							merge.removeHighlights(indexRes);
+							right.removeHighlights(indexR);
 							indexR++;
 							indexRes++;
 						}

@@ -1,5 +1,7 @@
 package sorting;
 
+import java.util.ArrayList;
+
 import graphics.ArrayCanvas;
 
 public class Sorter
@@ -46,6 +48,16 @@ public class Sorter
 						SelectionSort.sort(ac);
 					case SHELL:
 						break;
+					case BOGO:
+						BogoSort.sort(ac);
 					}
+			}
+
+		/**
+		 * Compares two elements by index in a list
+		 */
+		public static <E extends Comparable<E>> int compare(ArrayList<E> list, int i, int j)
+			{
+				return list.get(i).compareTo(list.get(j));
 			}
 	}
