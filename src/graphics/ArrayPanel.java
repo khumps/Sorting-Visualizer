@@ -20,6 +20,7 @@ import utils.Constants.STATE;
  * @author humphreysk
  *
  */
+@SuppressWarnings("deprecation")
 public class ArrayPanel extends Pane
 	{
 		ArrayCanvas canvas;

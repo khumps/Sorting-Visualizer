@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import graphics.ArrayCanvas;
 import graphics.PaintableArray;
 import utils.CanvasUtils;
+import utils.Constants;
 
 public class QuickSort
 	{
@@ -12,6 +13,7 @@ public class QuickSort
 			{
 				ArrayList<Integer> arr = pa.list;
 				int pivotVal = arr.get(low);
+				pa.addHighlight(pivotVal, Constants.COLOR_POINTER1);
 				int right = high;
 				int left = low + 1;
 
@@ -31,6 +33,7 @@ public class QuickSort
 					}
 				}
 				CanvasUtils.swap(ac, pa, low, right);
+				pa.removeHighlights(pivotVal);
 				return right;
 			}
 
@@ -39,7 +42,6 @@ public class QuickSort
 				int pivot;
 				if (low >= high)
 					return;
-
 				pivot = partition(ac, pa, low, high);
 				PaintableArray left = pa.subArrayLinked(low, pivot - 1);
 				quickSort(ac, left, low, pivot - 1);

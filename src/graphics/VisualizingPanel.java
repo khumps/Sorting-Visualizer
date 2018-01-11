@@ -16,8 +16,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import utils.Constants;
-import utils.Constants.STATE;
 import utils.Constants.SHUFFLER_TYPE;
+import utils.Constants.STATE;
 import utils.Shuffler;
 
 /**

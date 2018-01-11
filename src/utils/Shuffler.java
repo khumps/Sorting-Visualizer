@@ -39,6 +39,8 @@ public class Shuffler
 						return random(inOrder(size, true));
 					case RANDOM_FEW_UNIQUES:
 						return random(fewUniques(size, true));
+					case REVERSE_ALL_UNIQUES:
+						return inOrder(size, false);
 					default:
 						return inOrder(size, true);
 

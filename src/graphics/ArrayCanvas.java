@@ -14,6 +14,7 @@ import utils.Constants.STATE;
  * @author Kevin Humphreys
  *
  */
+@SuppressWarnings("deprecation")
 public class ArrayCanvas extends Canvas
 	{
 		public static double ARRAY_HEIGHT;
@@ -183,6 +184,7 @@ public class ArrayCanvas extends Canvas
 		/**
 		 * Stops and removes all threads on this canvas
 		 */
+
 		public void cleanThreads()
 			{
 				for (int i = 0; i < threads.size(); i++) {
