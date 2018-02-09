@@ -57,6 +57,7 @@ public class PaintableArray
 				this.parent = parent;
 				this.lo = lo;
 				this.hi = hi;
+				rangeCheck();
 				max = maxVal();
 				children = new ArrayList<PaintableArray>();
 				highlights = new HashMap<Integer, Color>(list.size());
@@ -266,13 +267,11 @@ public class PaintableArray
 		 */
 		public PaintableArray subArrayLinked(int lo, int hi)
 			{
-				PaintableArray p = new PaintableArray(list, x + width / (this.hi - this.lo) * (lo - this.lo) + 2, y + height + 10, width / (this.hi - this.lo) * (hi - lo) - 4, height / 1.5, depth + 1,
+				PaintableArray p = new PaintableArray(list,lo,hi, x + width / (this.hi - this.lo) * (lo - this.lo) + 2, y + height + 10, width / (this.hi - this.lo) * (hi - lo) - 4, height / 1.5, depth + 1,
 						this);
 				synchronized (children) {
 					children.add(p);
 				}
-				p.lo = lo;
-				p.hi = hi;
 				return p;
 			}
 
@@ -304,6 +303,18 @@ public class PaintableArray
 				for (int i = 0; i < children.size(); i++) {
 					children.get(i)._updateSize(widthScale, gc);
 				}
+			}
+
+		/**
+			 * Checks to make sure that lo and hi are valid values, throws IndexOutOfBoundsException otherwise
+			 */
+		private void rangeCheck()
+			{
+				if (lo >= 0 && lo < list.size() && hi >= 0 && hi < list.size()) {
+					return;
+				}
+				System.out.println("ERROR");
+				throw new IndexOutOfBoundsException("PaintableArray indexes out of bounds: lo=" + lo + " hi = " + hi + "possible range: 0-" + list.size());
 			}
 
 	}
