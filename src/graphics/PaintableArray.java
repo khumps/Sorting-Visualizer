@@ -221,12 +221,15 @@ public class PaintableArray
 
 		/**
 		 * Removes all children from the PaintableArray
+		 *  
+		 * NOT FUNCTIONING
 		 * 
 		 * @param gc
 		 */
 		public void removeChildren(GraphicsContext gc)
 			{
-				children.clear();
+				for (PaintableArray child : children)
+					children.clear();
 			}
 
 		/**
@@ -267,8 +270,8 @@ public class PaintableArray
 		 */
 		public PaintableArray subArrayLinked(int lo, int hi)
 			{
-				PaintableArray p = new PaintableArray(list,lo,hi, x + width / (this.hi - this.lo) * (lo - this.lo) + 2, y + height + 10, width / (this.hi - this.lo) * (hi - lo) - 4, height / 1.5, depth + 1,
-						this);
+				PaintableArray p = new PaintableArray(list, lo, hi, x + width / (this.hi - this.lo) * (lo - this.lo) + 2, y + height + 10, width / (this.hi - this.lo) * (hi - lo) - 4, height / 1.5,
+						depth + 1, this);
 				synchronized (children) {
 					children.add(p);
 				}
@@ -314,7 +317,7 @@ public class PaintableArray
 					return;
 				}
 				System.out.println("ERROR");
-				throw new IndexOutOfBoundsException("PaintableArray indexes out of bounds: lo=" + lo + " hi = " + hi + "possible range: 0-" + list.size());
+				throw new IndexOutOfBoundsException("PaintableArray indexes out of bounds: lo=" + lo + " hi = " + hi + " possible range: 0-" + list.size());
 			}
 
 	}
