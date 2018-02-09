@@ -2,13 +2,10 @@ package sorting;
 
 import java.util.ArrayList;
 
-import com.sun.prism.paint.Paint;
-
 import graphics.ArrayCanvas;
 import graphics.PaintableArray;
 import utils.CanvasUtils;
 import utils.Constants;
-import utils.Shuffler;
 
 public class QuickSort
 	{
