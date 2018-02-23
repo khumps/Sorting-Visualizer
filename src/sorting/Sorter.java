@@ -48,6 +48,8 @@ public class Sorter
 						SelectionSort.sort(ac);
 					case SHELL:
 						break;
+					case RADIX:
+						RadixSort.sort(ac);
 					case BOGO:
 						BogoSort.sort(ac);
 					}

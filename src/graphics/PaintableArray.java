@@ -228,8 +228,8 @@ public class PaintableArray
 		 */
 		public void removeChildren(GraphicsContext gc)
 			{
-				for (PaintableArray child : children)
-					children.clear();
+			/* 	for (PaintableArray child : children)
+					children.clear(); */
 			}
 
 		/**

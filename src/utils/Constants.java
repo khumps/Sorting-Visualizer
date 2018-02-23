@@ -15,8 +15,9 @@ public class Constants
 		public enum SORTING_TYPE{
 				SELECTION,
 				INSERTION,
+				RADIX,
 				BOGO,
-				SHELL,
+				//SHELL,
 				BUBBLE,
 				HEAP,
 				MERGE,
