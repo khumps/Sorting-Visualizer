@@ -46,8 +46,8 @@ public class Sorter
 						break;
 					case SELECTION:
 						SelectionSort.sort(ac);
-					case SHELL:
-						break;
+					/* case SHELL:
+						break; */
 					case RADIX:
 						RadixSort.sort(ac);
 					case BOGO:
