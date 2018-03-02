@@ -9,7 +9,7 @@ public class BogoSort
 		public static <E extends Comparable<E>> void sort(ArrayCanvas ac)
 			{
 				ArrayList<Integer> array = ac.getArray().list;
-				while (!Sorter.isSorted(ac.getArray())) {
+				while (!Sorter.isSorted(ac.getArray(), false)) {
 					CanvasUtils.swap(ac, ac.getArray(), (int) (Math.random() * array.size()), (int) (Math.random() * array.size()));
 				}
 			}

@@ -41,7 +41,7 @@ public class HeapSort
 				}
 			}
 
-		public static ArrayList<Integer> sort(ArrayCanvas ac)
+		public static void sort(ArrayCanvas ac)
 			{
 				ArrayList<Integer> list = ac.getArray().list;
 				int count = list.size();
@@ -52,7 +52,6 @@ public class HeapSort
 					end = end - 1;
 					siftDown(ac, 0, end);
 				}
-				return list;
 				Sorter.isSorted(ac.getArray(), true);
 			}
 
