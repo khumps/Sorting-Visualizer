@@ -75,6 +75,7 @@ public class ParallelBitonicSort
 				int padding = padLength(list);
 				sort(ac, ac.getArray(), 0, list.size(), true, ac.getGraphicsContext2D());
 				removePad(list, padding);
+				Sorter.isSorted(ac.getArray(), true);
 			}
 
 		public static <E extends Comparable<E>> void sort(ArrayCanvas ac, PaintableArray pa, int lo, int count, boolean direction, GraphicsContext gc)

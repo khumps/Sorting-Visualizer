@@ -33,7 +33,6 @@ public class QuickSort
 					pa.addHighlight(pivot, Constants.COLOR_POINTER1);
 					PaintableArray left = pa.subArrayLinked(p, pivot);
 					randQuickSort(ac, left, p, pivot);
-					System.out.println(p + " " + pivot + " " + r);
 					if (pivot + 1 < r - 1) {
 						PaintableArray right = pa.subArrayLinked(pivot + 1, r - 1);
 						randQuickSort(ac, right, pivot + 1, r);
@@ -47,7 +46,7 @@ public class QuickSort
 		public static void sort(ArrayCanvas ac)
 			{
 				randQuickSort(ac, ac.getArray(), 0, ac.getArray().list.size());
-				//quickSort(ac, ac.getArray(), 0, ac.getArray().list.size() - 1);
+				Sorter.isSorted(ac.getArray(), true);
 			}
 
 	}

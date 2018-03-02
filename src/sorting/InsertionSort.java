@@ -33,5 +33,6 @@ public class InsertionSort
 					CanvasUtils.sleep(10);
 					ac.getArray().removeHighlights(i);
 				}
+				Sorter.isSorted(ac.getArray(), true);
 			}
 	}

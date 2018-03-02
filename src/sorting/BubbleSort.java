@@ -23,7 +23,7 @@ public class BubbleSort
 					}
 					ac.getArray().removeHighlights(i);
 				}
-
+				Sorter.isSorted(ac.getArray(), true);
 			}
 
 	}

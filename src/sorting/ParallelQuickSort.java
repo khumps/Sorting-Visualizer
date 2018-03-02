@@ -68,5 +68,6 @@ public class ParallelQuickSort
 		public static void sort(ArrayCanvas ac)
 			{
 				sort(ac, ac.getArray(), 0, ac.getArray().list.size() - 1);
+				Sorter.isSorted(ac.getArray(), true);
 			}
 	}

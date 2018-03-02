@@ -65,6 +65,7 @@ public class ParallelMergeSort
 		public static <E extends Comparable<E>> void sort(ArrayCanvas ac)
 			{
 				sort(ac, ac.getArray());
+				Sorter.isSorted(ac.getArray(), true);
 			}
 
 		public static void sort(ArrayCanvas ac, PaintableArray pa)

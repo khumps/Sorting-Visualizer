@@ -2,8 +2,6 @@ package sorting;
 
 import java.util.ArrayList;
 
-import com.sun.prism.paint.Paint;
-
 import graphics.ArrayCanvas;
 import graphics.PaintableArray;
 import utils.CanvasUtils;
@@ -26,6 +24,7 @@ public class RadixSort
                 for (int i = 1; i <= maxDecimalPlaces; i++) {
                     auxSort(ac, i);
                 }
+                Sorter.isSorted(ac.getArray(), true);
             }
 
         /**

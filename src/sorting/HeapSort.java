@@ -53,7 +53,7 @@ public class HeapSort
 					siftDown(ac, 0, end);
 				}
 				return list;
-
+				Sorter.isSorted(ac.getArray(), true);
 			}
 
 	}

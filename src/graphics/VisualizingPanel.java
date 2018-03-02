@@ -182,14 +182,14 @@ public class VisualizingPanel extends Application
 			}
 
 		/**
-		 * Run after gui has been init
+		 * Run after gui has been initialized
 		 */
 		private void postInit()
 			{
 				setState(STATE.STOPPED);
 				ArrayCanvas.setArraySize(sizes.getSelectionModel().getSelectedItem());
 				baseArray = Shuffler.generateArray(null, ArrayCanvas.ARRAY_SIZE);
-				// addSorter();
+				addSorter();
 			}
 
 		/**
@@ -257,13 +257,13 @@ public class VisualizingPanel extends Application
 				sorters = new ArrayList<ArrayPanel>();
 				timer = new CanvasTimer(this);
 				initUI();
-				postInit();
 				bp.setTop(gui);
 				bp.setCenter(sorterPanel);
 				primaryStage.setResizable(true);
 				primaryStage.setScene(new Scene(bp));
 				timer.start();
 				primaryStage.show();
+				postInit();
 			}
 
 		/**
