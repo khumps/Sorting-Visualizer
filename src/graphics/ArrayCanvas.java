@@ -43,7 +43,7 @@ public class ArrayCanvas extends Canvas
 		 */
 		public void cleanup()
 			{
-				reset();
+				resetCounts();
 				array.cleanup(getGraphicsContext2D());
 			}
 
@@ -63,14 +63,6 @@ public class ArrayCanvas extends Canvas
 		public int getCompare()
 			{
 				return comparisons;
-			}
-
-		/**
-		 * Returns the size of the sorting array
-		 */
-		public int getSize()
-			{
-				return ARRAY_SIZE;
 			}
 
 		/**
@@ -127,7 +119,7 @@ public class ArrayCanvas extends Canvas
 		/**
 		 * Resets the compare and swap count
 		 */
-		private void reset()
+		private void resetCounts()
 			{
 				comparisons = 0;
 				swaps = 0;

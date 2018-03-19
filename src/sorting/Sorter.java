@@ -15,7 +15,7 @@ public class Sorter
 		 * @param type
 		 * @param gc
 		 */
-		public static <E extends Comparable<E>> void sort(ArrayCanvas ac)
+		public static void sort(ArrayCanvas ac)
 			{
 				switch (ac.getSortingType())
 					{

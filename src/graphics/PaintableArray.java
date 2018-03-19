@@ -313,7 +313,7 @@ public class PaintableArray
 			 */
 		private void rangeCheck()
 			{
-				if (lo >= 0 && lo < list.size() && hi >= 0 && hi < list.size()) {
+				if (lo >= 0 && lo < list.size() && hi >= 0 && hi <= list.size()) {
 					return;
 				}
 				System.out.println("ERROR");
